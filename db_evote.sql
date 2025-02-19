@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 18, 2025 at 02:43 PM
+-- Generation Time: Feb 19, 2025 at 08:05 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -46,7 +46,7 @@ CREATE TABLE `candidates` (
 
 CREATE TABLE `committees` (
   `id` varchar(255) NOT NULL,
-  `whatsapp_number` int NOT NULL,
+  `whatsapp_number` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -123,6 +123,7 @@ CREATE TABLE `majors` (
 
 CREATE TABLE `superusers` (
   `id` varchar(255) NOT NULL,
+  `whatsapp_number` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -141,8 +142,20 @@ CREATE TABLE `users` (
   `id_faculty` int NOT NULL,
   `id_department` int NOT NULL,
   `id_major` int NOT NULL,
-  `whatsapp_number` int NOT NULL,
+  `whatsapp_number` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `voting`
+--
+
+CREATE TABLE `voting` (
+  `voting_id` int NOT NULL,
+  `Id_user` int DEFAULT NULL,
+  `Id_candidate` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -197,7 +210,8 @@ ALTER TABLE `majors`
 -- Indexes for table `superusers`
 --
 ALTER TABLE `superusers`
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD UNIQUE KEY `whatsapp_number` (`whatsapp_number`);
 
 --
 -- Indexes for table `users`
@@ -210,6 +224,14 @@ ALTER TABLE `users`
   ADD KEY `id_faculty` (`id_faculty`),
   ADD KEY `id_department` (`id_department`),
   ADD KEY `id_major` (`id_major`);
+
+--
+-- Indexes for table `voting`
+--
+ALTER TABLE `voting`
+  ADD PRIMARY KEY (`voting_id`),
+  ADD UNIQUE KEY `Id_user` (`Id_user`),
+  ADD KEY `Id_candidate` (`Id_candidate`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -252,6 +274,12 @@ ALTER TABLE `users`
   MODIFY `user_id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `voting`
+--
+ALTER TABLE `voting`
+  MODIFY `voting_id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -276,6 +304,13 @@ ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`id_faculty`) REFERENCES `faculties` (`faculty_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `users_ibfk_3` FOREIGN KEY (`id_department`) REFERENCES `departments` (`department_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `users_ibfk_4` FOREIGN KEY (`id_major`) REFERENCES `majors` (`major_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `voting`
+--
+ALTER TABLE `voting`
+  ADD CONSTRAINT `voting_ibfk_1` FOREIGN KEY (`Id_user`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `voting_ibfk_2` FOREIGN KEY (`Id_candidate`) REFERENCES `candidates` (`candidate_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
