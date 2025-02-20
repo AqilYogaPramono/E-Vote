@@ -3,7 +3,14 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  if (a) {
+    //render this pages if data in 
+    res.render('index')
+  } else if (1) {
+    res.render('index')
+  } else {
+    res.render('index')
+  }
 });
 
 //render login
