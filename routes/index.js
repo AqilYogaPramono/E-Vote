@@ -30,6 +30,9 @@ router.get('/', async (req, res) => {
 })
 
 //render login
+router.get('/login', async (req, res, next) => {
+  res.render('preVoting/login')
+})
 //router login
 //router logout
 module.exports = router;
